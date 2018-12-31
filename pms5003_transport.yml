@@ -1,0 +1,26 @@
+# PMS5003 transport protocol-Active Mode
+# Each field has a list indicating the field position
+# in the frame. (e.g., [start_byte, num_bytes])
+frame_size: 32
+start_char: 0x424d
+data_size: 30
+fields:
+    start_char: [0,2]
+    frame_length: [2,2]
+    PM1_std: [4,2]
+    PM25_std: [6,2]
+    PM10_std: [8,2]
+    PM1_env: [10,2]
+    PM25_env: [12,2]
+    PM10_env: [14,2]
+    P03: [16,2]
+    P05: [18,2]
+    P1: [20,2]
+    P25: [22,2]
+    P5: [24,2]
+    P10: [26,2]
+    reserved: [28,2]
+    checksum: [30,2]
+
+  
+  

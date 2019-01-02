@@ -5,9 +5,10 @@ from struct import *
 import codecs
 import yaml
 import signal
+import yaml
+import logging
 
-
-#TODO: replace print statements with logging
+logger = logging.getLogger(__name__)
 
 
 class Timeout(Exception):
@@ -80,9 +81,9 @@ class pms5003():
                 if self.verify_checksum(buff_hex):
                     self.get_data(buff_hex)
                 else:
-                    print("Checksum does not match, no data collected")
+                    logger.error("Checksum does not match, no data collected")
         except Timeout:
-            print("Timeout! No data collected in {} seconds".format(self.timeout))
+            logger.errror("Timeout! No data collected in %s seconds", self.timeout)
 
                 
     def verify_checksum(self, buff_hex):
@@ -107,6 +108,3 @@ class pms5003():
                 st = 2*v[0]
                 nd = st + 2*v[1]
                 self.data[k] = int(buff_hex[st:nd], 16)
-            
-        
-        

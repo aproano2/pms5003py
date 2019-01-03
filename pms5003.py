@@ -40,7 +40,7 @@ def timeout(seconds_before_timeout):
                 # this line should be inside the "finally" block (per Sam Kortchmar)
                 signal.alarm(0)
             return result
-        new_f.func_name = f.func_name
+        new_f.__name__ = f.__name__
         return new_f
     return decorate
 
@@ -54,6 +54,7 @@ class pms5003():
         self.baudrate = baudrate
         self.device = device
         self.timeout = timeout
+        self.start_char = b'424d'
         self.data = dict()
         with open('pms5003_transport.yml', 'r') as fp:
             self.frame = yaml.load(fp)
@@ -64,20 +65,21 @@ class pms5003():
         self.serial = serial.Serial(self.device, baudrate=self.baudrate)
 
         
-    @timeout(self.timeout)
+    @timeout(20)
     def find_start_chars(self):
         while True:
             buff = self.serial.read(self.frame['fields']['start_char'][1])
             buff_hex = codecs.encode(buff, 'hex_codec')
-            if buff_hex == hex(self.frame['start_char']):
+            if buff_hex == self.start_char:
                 return True
 
             
     def read_frame(self, data_size=30):
         try:
-            if self.find_start_chars:
+            self.conn_serial_port()
+            if self.find_start_chars():
                 buff = self.serial.read(data_size)
-                buff_hex = hex(self.frame['start_char']) + codecs.encode(buff, 'hex_codec')
+                buff_hex = self.start_char + codecs.encode(buff, 'hex_codec')
                 if self.verify_checksum(buff_hex):
                     self.get_data(buff_hex)
                 else:

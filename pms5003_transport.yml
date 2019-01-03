@@ -2,7 +2,6 @@
 # Each field has a list indicating the field position
 # in the frame. (e.g., [start_byte, num_bytes])
 frame_size: 32
-start_char: 0x424d
 data_size: 30
 fields:
     start_char: [0,2]
@@ -21,6 +20,3 @@ fields:
     P10: [26,2]
     reserved: [28,2]
     checksum: [30,2]
-
-  
-  

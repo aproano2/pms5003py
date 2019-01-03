@@ -1,6 +1,8 @@
 import pms5003
 import logging.config
 import logging
+import os
+import yaml
 
 
 def setup_logging(default_path='logging.yml', default_level=logging.INFO, env_key='LOG_CFG'):
@@ -25,6 +27,12 @@ def main():
     sensor = pms5003.pms5003()
     
     while True:
-        sensor.read_frame()
-        print(sensor.data)
-    
+        try: 
+            sensor.read_frame()
+            print(sensor.data)
+        except KeyboardInterrupt:
+            print("Terminating data collection")
+            break
+
+if __name__ == '__main__':
+    main()

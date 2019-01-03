@@ -2,6 +2,8 @@ version: 1
 disable_existing_loggers: true
 
 formatters:
+    simple:
+        format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
     standard:
         format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
     error:
@@ -13,6 +15,15 @@ handlers:
         level: DEBUG
         formatter: standard
         stream: ext://sys.stdout
+
+    info_file_handler:
+        class: logging.handlers.RotatingFileHandler
+        level: INFO
+        formatter: simple
+        filename: /tmp/info.log
+        maxBytes: 10485760 # 10MB
+        backupCount: 10
+        encoding: utf8
 
     error_file_handler:
         class: logging.handlers.RotatingFileHandler
@@ -40,5 +51,5 @@ root:
 loggers:
     <module.x>:
         level: DEBUG
-        handlers: [info_file_handler, error_file_handler, critical_file_handler, debug_file_handler, warn_file_handler]
+        handlers: [info_file_handler, error_file_handler, debug_file_handler]
         propogate: yes

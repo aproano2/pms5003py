@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import pms5003
 import logging.config
 import logging

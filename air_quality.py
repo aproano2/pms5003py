@@ -9,7 +9,6 @@ import yaml
 
 def setup_logging(default_path='logging.yml', default_level=logging.INFO, env_key='LOG_CFG'):
     """Setup logging configuration
-
     """
     path = default_path
     value = os.getenv(env_key, None)
@@ -27,14 +26,16 @@ def main():
     setup_logging()
     logger = logging.getLogger(__name__)
     sensor = pms5003.pms5003()
-    
     while True:
         try: 
             sensor.read_frame()
             print(sensor.data)
         except KeyboardInterrupt:
-            print("Terminating data collection")
+            print("\nTerminating data collection")
             break
+        except:
+            break
+
 
 if __name__ == '__main__':
     main()

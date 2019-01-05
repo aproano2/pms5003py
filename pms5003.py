@@ -19,6 +19,13 @@ class Timeout(Exception):
         return repr(self.value)
 
 
+class ChecksumError(Exception):
+    def __init__(self, value = "Checksum failed"):
+        self.value = value
+    def __str__(self):
+        return repr(self.value)
+
+
 def timeout(seconds_before_timeout):
     """ Timeout decorator obtained from 
         https://www.saltycrane.com/blog/2010/04/using-python-timeout-decorator-uploading-s3/
@@ -75,12 +82,14 @@ class pms5003():
             if self.find_start_chars():
                 buff = self.serial.read(data_size)
                 buff_hex = self.start_char + codecs.encode(buff, 'hex_codec')
-                if self.verify_checksum(buff_hex):
+                try:
+                    self.verify_checksum(buff_hex)
                     self.get_data(buff_hex)
-                else:
-                    logger.error("Checksum does not match, no data collected")
+                except ChecksumError:
+                    logger.error("Checksum does not match", exc_info=True)
         except Timeout:
-            logger.error("Timeout! No data collected in %s seconds", self.timeout)
+            logger.error("Timeout! No data collected in %s seconds", self.timeout, exc_info=True)
+            raise Timeout()
 
                 
     def verify_checksum(self, buff_hex):
@@ -91,10 +100,8 @@ class pms5003():
         data = buff_hex[:-checksum_size_nibble]
         for x in range(0, len(data), 2):
             checksum += int(data[x:x+2], 16)
-        if checksum == int(buff_hex[-checksum_size_nibble:], 16):
-            return True
-        else:
-            return False
+        if checksum != int(buff_hex[-checksum_size_nibble:], 16):
+            raise ChecksumError()
 
         
     def get_data(self, buff_hex):

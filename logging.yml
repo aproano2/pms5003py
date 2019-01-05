@@ -16,15 +16,6 @@ handlers:
         formatter: standard
         stream: ext://sys.stdout
 
-    info_file_handler:
-        class: logging.handlers.RotatingFileHandler
-        level: INFO
-        formatter: simple
-        filename: /tmp/info.log
-        maxBytes: 10485760 # 10MB
-        backupCount: 10
-        encoding: utf8
-
     error_file_handler:
         class: logging.handlers.RotatingFileHandler
         level: ERROR
@@ -49,7 +40,7 @@ root:
     propogate: yes
 
 loggers:
-    <module.x>:
+    pms5003:
         level: DEBUG
-        handlers: [info_file_handler, error_file_handler, debug_file_handler]
+        handlers: [error_file_handler, debug_file_handler]
         propogate: yes

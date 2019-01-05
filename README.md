@@ -25,5 +25,6 @@ $ sudo ./air_quality.py
 {'PM1_std': 14, 'PM1_env': 14, 'P5': 0, 'P25': 2, 'P05': 709, 'PM25_std': 17, 'P1': 68, 'PM10_std': 17, 'PM25_env': 17, 'P10': 0, 'P03': 2436, 'PM10_env': 17}
 {'PM1_std': 14, 'PM1_env': 14, 'P5': 0, 'P25': 2, 'P05': 749, 'PM25_std': 18, 'P1': 79, 'PM10_std': 18, 'PM25_env': 18, 'P10': 0, 'P03': 2553, 'PM10_env': 18}
 {'PM1_std': 16, 'PM1_env': 16, 'P5': 0, 'P25': 2, 'P05': 803, 'PM25_std': 20, 'P1': 90, 'PM10_std': 20, 'PM25_env': 20, 'P10': 0, 'P03': 2679, 'PM10_env': 20}
-^CTerminating data collection
+^C
+Terminating data collection
 ```

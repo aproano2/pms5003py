@@ -1,7 +1,5 @@
 import serial
-import time
 import sys
-from struct import *
 import codecs
 import yaml
 import signal
@@ -27,17 +25,14 @@ def timeout(seconds_before_timeout):
     """
     def decorate(f):
         def handler(signum, frame):
-            raise TimeoutError()
+            raise Timeout()
         def new_f(*args, **kwargs):
             old = signal.signal(signal.SIGALRM, handler)
             signal.alarm(seconds_before_timeout)
             try:
                 result = f(*args, **kwargs)
             finally:
-                # reinstall the old signal handler
                 signal.signal(signal.SIGALRM, old)
-                # cancel the alarm
-                # this line should be inside the "finally" block (per Sam Kortchmar)
                 signal.alarm(0)
             return result
         new_f.__name__ = f.__name__
@@ -85,7 +80,7 @@ class pms5003():
                 else:
                     logger.error("Checksum does not match, no data collected")
         except Timeout:
-            logger.errror("Timeout! No data collected in %s seconds", self.timeout)
+            logger.error("Timeout! No data collected in %s seconds", self.timeout)
 
                 
     def verify_checksum(self, buff_hex):

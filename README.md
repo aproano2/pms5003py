@@ -1,4 +1,4 @@
-# PMS5003-Python
+# pms5003py
 
 The [PM2.5 Air Quality Sensor](https://learn.adafruit.com/pm25-air-quality-sensor) allows for real-time monitoring of PM10, PM2.5 and PM10.0 concentrations. 
 

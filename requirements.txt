@@ -1,2 +1,0 @@
-pyserial==3.2.1
-PyYAML==3.13

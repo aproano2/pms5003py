@@ -2,7 +2,7 @@
 
 #TODO: update imports to reflect packaging changes
 
-import pms5003
+from pms5003py import pms5003
 import logging.config
 import logging
 import os
@@ -27,7 +27,7 @@ def setup_logging(default_path='logging.yml', default_level=logging.INFO, env_ke
 def main():
     setup_logging()
     logger = logging.getLogger(__name__)
-    sensor = pms5003.pms5003()
+    sensor = pms5003()
     while True:
         try: 
             sensor.read_frame()
@@ -36,6 +36,7 @@ def main():
             print("\nTerminating data collection")
             break
         except:
+            logger.debug('Error:', exc_info=True)
             break
 
 

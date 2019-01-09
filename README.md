@@ -11,11 +11,12 @@ Once the blue screen appears, go to `Interfacing options`, and then to `Serial`.
 
 A copy of the datasheet of the PM2.5 Air Quality Sensor can be found [here](https://cdn-shop.adafruit.com/product-files/3686/plantower-pms5003-manual_v2-3.pdf).
 
+To install the `pms5003py` package, clone this repo and run `pip3`:
 
-In addition to the Python 3 packages included in Raspbian Stretch, the `pms500` requires the `pyserial` and `pyyaml` packages. To install them, please run:
 
 ```
-$ pip3 install -r requirements.txt
+$ cd /path-to-repo/pms5003py
+$ pip3 install .
 ```
 
 To execute the example, simply run:

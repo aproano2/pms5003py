@@ -8,10 +8,33 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+# PMS5003 transport protocol-Active Mode
+# Each field has a list indicating the field position
+# in the frame. (e.g., [start_byte, num_bytes])
+frame_info = { 'frame_size': 32, 'data_size': 30, 
+               'fields':{'start_char': [0,2],
+                         'frame_length': [2,2],
+                         'PM1_std': [4,2],
+                         'PM25_std': [6,2],
+                         'PM10_std': [8,2],
+                         'PM1_env': [10,2],
+                         'PM25_env': [12,2],
+                         'PM10_env': [14,2],
+                         'P03': [16,2],
+                         'P05': [18,2],
+                         'P1': [20,2],
+                         'P25': [22,2],
+                         'P5': [24,2],
+                         'P10': [26,2],
+                         'reserved': [28,2],
+                         'checksum': [30,2],
+                         }
+               }
+
 
 class Timeout(Exception):
     """ Timeout decorator obtained from 
-        https://www.saltycrane.com/blog/2010/04/using-python-timeout-decorator-uploading-s3/
+        https://www.saltycrane.com/blog/
     """
     def __init__(self, value = "Timed Out"):
         self.value = value
@@ -28,7 +51,7 @@ class ChecksumError(Exception):
 
 def timeout(seconds_before_timeout):
     """ Timeout decorator obtained from 
-        https://www.saltycrane.com/blog/2010/04/using-python-timeout-decorator-uploading-s3/
+        https://www.saltycrane.com/blog
     """
     def decorate(f):
         def handler(signum, frame):
@@ -48,7 +71,8 @@ def timeout(seconds_before_timeout):
 
 
 class pms5003():
-    """This class handles the serial connection between the PMS5003 and a Raspberry PI
+    """This class handles the serial connection between the PMS5003 and 
+       a Raspberry PI
     """
     
     def __init__(self, baudrate=9600, device='/dev/ttyS0', timeout=20):
@@ -58,8 +82,7 @@ class pms5003():
         self.timeout = timeout
         self.start_char = b'424d'
         self.data = dict()
-        with open('pms5003_transport.yml', 'r') as fp:
-            self.frame = yaml.load(fp)
+        self.frame = frame_info
 
             
     def conn_serial_port(self):
@@ -88,7 +111,8 @@ class pms5003():
                 except ChecksumError:
                     logger.error("Checksum does not match", exc_info=True)
         except Timeout:
-            logger.error("Timeout! No data collected in %s seconds", self.timeout, exc_info=True)
+            logger.error("Timeout! No data collected in %s seconds",
+                          self.timeout, exc_info=True)
             raise Timeout()
 
                 

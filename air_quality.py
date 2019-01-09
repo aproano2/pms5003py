@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-#TODO: update imports to reflect packaging changes
-
 from pms5003py import pms5003
 import logging.config
 import logging
